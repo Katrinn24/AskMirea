@@ -32,7 +32,7 @@ fun RegistrationCurtain(
     emailError: String?, // Должен быть здесь
     password: String, onPasswordChange: (String) -> Unit,
     passwordError: String?, // Должен быть здесь
-    pereatpassword: String, onRepeatPasswordChange: (String) -> Unit,
+    repeatPassword: String, onRepeatPasswordChange: (String) -> Unit,
     repeatPasswordError: String?, // Должен быть здесь
     group: String, onGroupChange: (String) -> Unit,
     direction: String, onDirectionChange: (String) -> Unit
@@ -114,7 +114,7 @@ fun RegistrationCurtain(
 
             // 4. Повтор пароля (теперь со своей ошибкой repeatPasswordError)
             RegistrationTextField(
-                value = pereatpassword,
+                value = repeatPassword,
                 onValueChange = onRepeatPasswordChange,
                 placeholderText = "Repeat the password",
                 iconRes = R.drawable.ic_password,

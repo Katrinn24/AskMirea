@@ -15,10 +15,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,7 +24,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.andreykakanareykaapp.R
+import com.example.andreykakanareykaapp.presentation.LoginViewModel
 import com.example.andreykakanareykaapp.ui.components.loginscreen.ButtonLogIn
 import com.example.andreykakanareykaapp.ui.components.loginscreen.Curtain
 import com.example.andreykakanareykaapp.ui.components.registrationscreen.RegistrationTextField
@@ -36,13 +34,10 @@ import com.example.andreykakanareykaapp.ui.theme.kronaOne
 
 @Composable
 fun LoginScreen(
-    onNavigateToRegister: () -> Unit
+    onNavigateToRegister: () -> Unit,
+    onNavigateToMain: () -> Unit,
+    viewModel: LoginViewModel = viewModel()
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var emailError by remember { mutableStateOf<String?>(null) }
-    var passwordError by remember { mutableStateOf<String?>(null) }
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -55,11 +50,10 @@ fun LoginScreen(
             modifier = Modifier.fillMaxSize()
         )
 
-        // Используем Column с verticalScroll для прокрутки всего содержимого
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState()), // АВТОМАТИЧЕСКИЙ СКРОЛЛ
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Curtain()
@@ -72,38 +66,35 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 RegistrationTextField(
-                    value = email,
-                    onValueChange = { email = it; emailError = null },
+                    value = viewModel.email,
+                    onValueChange = viewModel::updateEmail,
                     placeholderText = "example@gmail.com",
                     iconRes = R.drawable.ic_email,
-                    isError = emailError != null,
-                    errorText = emailError
+                    isError = viewModel.emailError != null,
+                    errorText = viewModel.emailError
                 )
 
                 Spacer(Modifier.height(16.dp))
 
                 RegistrationTextField(
-                    value = password,
-                    onValueChange = { password = it; passwordError = null },
+                    value = viewModel.password,
+                    onValueChange = viewModel::updatePassword,
                     placeholderText = "Password",
                     iconRes = R.drawable.ic_password,
                     isPassword = true,
-                    isError = passwordError != null,
-                    errorText = passwordError
+                    isError = viewModel.passwordError != null,
+                    errorText = viewModel.passwordError
                 )
 
                 Spacer(Modifier.height(24.dp))
 
                 ButtonLogIn(
                     onClick = {
-                        emailError = if (!email.contains("@")) "Invalid domain" else null
-                        passwordError = if (password.length < 6) "Too short" else null
+                        viewModel.login(onSuccess = onNavigateToMain)
                     }
                 )
             }
 
-            // "Пружина", которая выталкивает кнопку регистрации вниз,
-            // если места на экране достаточно
             Spacer(Modifier.weight(1f))
 
             TextButton(
@@ -125,5 +116,5 @@ fun LoginScreen(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(onNavigateToRegister = {})
+    LoginScreen(onNavigateToRegister = {}, onNavigateToMain = {})
 }
