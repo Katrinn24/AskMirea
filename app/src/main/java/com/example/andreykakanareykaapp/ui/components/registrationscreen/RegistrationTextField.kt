@@ -93,7 +93,7 @@ fun RegistrationTextField(
                             painter = painterResource(if (passwordVisible) R.drawable.ic_openkey else R.drawable.ic_closedkey),
                             contentDescription = null,
                             modifier = Modifier.size(35.dp),
-                            tint = if (isError) Color(0xFFE57373) else Color.White.copy(0.5f)
+                            tint = if (isError) Color(0xFFE57373) else Color.White.copy(0.4f)
                         )
                     }
                 } else {
@@ -101,8 +101,8 @@ fun RegistrationTextField(
                         Icon(
                             painter = painterResource(iconRes),
                             contentDescription = null,
-                            modifier = Modifier.size(30.dp),
-                            tint = if (isError) Color(0xFFE57373) else Color.White.copy(0.7f)
+                            modifier = Modifier.size(35.dp),
+                            tint = if (isError) Color(0xFFE57373) else Color.White.copy(0.6f)
                         )
                     }
                 }

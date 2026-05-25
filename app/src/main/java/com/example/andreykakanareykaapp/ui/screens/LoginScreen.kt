@@ -74,7 +74,7 @@ fun LoginScreen(
                 RegistrationTextField(
                     value = email,
                     onValueChange = { email = it; emailError = null },
-                    placeholderText = "example@edu.mirea.ru",
+                    placeholderText = "example@gmail.com",
                     iconRes = R.drawable.ic_email,
                     isError = emailError != null,
                     errorText = emailError
